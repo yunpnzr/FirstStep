@@ -1,21 +1,20 @@
-package com.example.firststep
+package com.example.firststep.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.firststep.component.SplashScreen
-import com.example.firststep.ui.onboarding.App
 import com.example.firststep.ui.theme.FirstStepTheme
 
 @Composable
-fun FirstStepApp () {
-    //App()
-    SplashScreen()
+fun register(
+
+){
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FirstStepAppPreview(){
+fun registerPreview(){
     FirstStepTheme {
-        FirstStepApp()
+        register()
     }
 }
