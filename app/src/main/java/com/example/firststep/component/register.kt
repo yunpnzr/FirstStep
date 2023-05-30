@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -34,9 +35,8 @@ import androidx.compose.ui.unit.dp
 import com.example.firststep.R
 import com.example.firststep.ui.theme.FirstStepTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun register(){
+fun Register(){
     Column(
         modifier = Modifier
             .padding(40.dp)
@@ -66,6 +66,7 @@ fun register(){
         var password by remember { mutableStateOf("") }
         var confirmPassword by remember { mutableStateOf("") }
 
+        //Nama Depan
         BasicTextField(
             value = firstName,
             onValueChange = { firstName = it },
@@ -80,16 +81,21 @@ fun register(){
                 Row(
                     Modifier
                         .background(Color.Transparent)
-                        .padding(16.dp)
+                        .padding(10.dp)
                         .fillMaxWidth()
                 ) {
                     if (firstName.text.isEmpty()) {
-                        Text("Nama Depan")
+                        Text(
+                            text = "Nama Depan",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                     innerTextField()
                 }
             },
         )
+
+        //Nama Belakang
         BasicTextField(
             value = lastName,
             onValueChange = { lastName = it },
@@ -104,16 +110,21 @@ fun register(){
                 Row(
                     Modifier
                         .background(Color.Transparent)
-                        .padding(16.dp)
+                        .padding(10.dp)
                         .fillMaxWidth()
                 ) {
                     if (lastName.text.isEmpty()) {
-                        Text("Nama Belakang")
+                        Text(
+                            text = "Nama Belakang",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                     innerTextField()
                 }
             },
         )
+
+        //Email
         BasicTextField(
             value = email,
             onValueChange = { email = it },
@@ -128,16 +139,21 @@ fun register(){
                 Row(
                     Modifier
                         .background(Color.Transparent)
-                        .padding(16.dp)
+                        .padding(10.dp)
                         .fillMaxWidth()
                 ) {
                     if (email.isEmpty()) {
-                        Text("Email")
+                        Text(
+                            text = "Email",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                     innerTextField()
                 }
             },
         )
+
+        //Password
         BasicTextField(
             value = password,
             onValueChange = { password = it },
@@ -153,16 +169,21 @@ fun register(){
                 Row(
                     Modifier
                         .background(Color.Transparent)
-                        .padding(16.dp)
+                        .padding(10.dp)
                         .fillMaxWidth()
                 ) {
                     if (password.isEmpty()) {
-                        Text("Password")
+                        Text(
+                            text = "Password",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                     innerTextField()
                 }
             },
         )
+
+        //Konfirmasi Password
         BasicTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -178,33 +199,69 @@ fun register(){
                 Row(
                     Modifier
                         .background(Color.Transparent)
-                        .padding(16.dp)
+                        .padding(10.dp)
                         .fillMaxWidth()
                 ) {
                     if (confirmPassword.isEmpty()) {
-                        Text("Konfirmasi Password")
+                        Text(
+                            text = "Konfirmasi Password",
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                     innerTextField()
                 }
             },
         )
+
+        //Tombol daftar
         Button(
             onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .width(154.dp),
+            shape = RoundedCornerShape(size = 10.dp),
             elevation =  ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,
                 pressedElevation = 0.dp,
                 disabledElevation = 0.dp
             )
         ) {
-            Text("Daftar")
+            Text(
+                text = "Daftar",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        //Konfirmasi punya akun atau belum
+        Row(
+            modifier = Modifier
+                .padding(
+                    top = 10.dp
+                )
+        ) {
+            Text(
+                text = "Sudah punya akun?",
+                style = MaterialTheme.typography.bodySmall
+            )
+            ClickableText(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(
+                        start = 5.dp
+                    ),
+                text = AnnotatedString("Masuk"),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun registerPreview(){
+fun RegisterPreview(){
     FirstStepTheme {
-        register()
+        Register()
     }
 }
