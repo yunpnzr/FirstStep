@@ -1,5 +1,7 @@
 package com.example.firststep.component
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,11 +35,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.firststep.R
+import com.example.firststep.navigation.Screen
 import com.example.firststep.ui.theme.FirstStepTheme
 
 @Composable
-fun Register(){
+fun Register(
+    navController: NavHostController,
+    onBackPressed: () -> Unit
+){
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    DisposableEffect(backDispatcher) {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        backDispatcher?.addCallback(callback)
+        onDispose {
+            callback.remove()
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(40.dp)
@@ -244,7 +268,9 @@ fun Register(){
                 style = MaterialTheme.typography.bodySmall
             )
             ClickableText(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(Screen.Login.route)
+                },
                 modifier = Modifier
                     .padding(
                         start = 5.dp
@@ -261,7 +287,8 @@ fun Register(){
 @Preview(showBackground = true)
 @Composable
 fun RegisterPreview(){
+    val navController = rememberNavController()
     FirstStepTheme {
-        Register()
+        Register(navController, onBackPressed = {})
     }
 }

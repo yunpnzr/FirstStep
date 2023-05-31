@@ -1,5 +1,7 @@
 package com.example.firststep.component
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,17 +28,41 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.firststep.R
+import com.example.firststep.navigation.Screen
 import com.example.firststep.ui.theme.FirstStepTheme
+import kotlinx.coroutines.launch
 
 @Composable
-fun Login(){
+fun Login(
+    navController: NavHostController,
+    onBackPressed: () -> Unit
+){
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    DisposableEffect(backDispatcher) {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        backDispatcher?.addCallback(callback)
+        onDispose {
+            callback.remove()
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(40.dp)
@@ -152,7 +179,9 @@ fun Login(){
                 style = MaterialTheme.typography.bodySmall
             )
             ClickableText(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(Screen.Register.route)
+                },
                 modifier = Modifier
                     .padding(
                         start = 5.dp
@@ -169,7 +198,8 @@ fun Login(){
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview(){
+    val navController = rememberNavController()
     FirstStepTheme {
-        Login()
+        Login(navController, onBackPressed = {})
     }
 }
